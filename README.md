@@ -1,2 +1,11 @@
-# Mini_Theatre
-Mini_Theatre
+![Screenshot 2024-11-19 180410](https://github.com/user-attachments/assets/9deb3ca1-289e-4c33-a2da-7cd48fdc5517)
+![Screenshot 2024-11-19 180514](https://github.com/user-attachments/assets/d14cc5ba-842a-4c9e-ab90-6cabcf07d2f1)
+![Screenshot 2024-11-19 180547](https://github.com/user-attachments/assets/580f1ba3-c67b-4804-ad25-45a2ea4d5452)
+![Screenshot 2024-11-19 180632](https://github.com/user-attachments/assets/49b8fa50-a73e-4104-ba22-b202e8eab676)
+![Screenshot 2024-11-19 180705](https://github.com/user-attachments/assets/9d1c213b-9b03-4a02-9489-da0f8c201716)
+![Screenshot 2024-11-19 180745](https://github.com/user-attachments/assets/777d42a4-d03b-48a5-b30a-37ef066f4d92)
+![Screenshot 2024-11-19 180806](https://github.com/user-attachments/assets/4b270913-cf52-49ce-838b-22f753cf9b15)
+![Screenshot 2024-11-19 180832](https://github.com/user-attachments/assets/3cdbd845-93f9-4a94-b4c6-bca10cccb5e0)
+![Screenshot 2024-11-19 180846](https://github.com/user-attachments/assets/c85169a1-9bcf-446e-a6e1-9dc8e62d4285)
+![Screenshot 2024-11-19 180913](https://github.com/user-attachments/assets/16fd9638-6f4c-4dac-b320-3bfa17df81df)
+![Screenshot 2024-11-19 180932](https://github.com/user-attachments/assets/0a212cee-a234-486a-a737-249739ae2bb9)
