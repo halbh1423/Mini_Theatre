@@ -1,0 +1,63 @@
+﻿@page
+@model Mini_Theatre.Pages.Cinemas.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+
+    <h1>Create</h1>
+
+    <h4>Cinema</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Cinema.Name" class="control-label"></label>
+                    <input asp-for="Cinema.Name" class="form-control" />
+                    <span asp-validation-for="Cinema.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cinema.Address" class="control-label"></label>
+                    <input asp-for="Cinema.Address" class="form-control" />
+                    <span asp-validation-for="Cinema.Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cinema.IsActive" class="control-label"></label>
+                    <input asp-for="Cinema.IsActive" class="form-control" />
+                    <span asp-validation-for="Cinema.IsActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cinema.CreateTime" class="control-label"></label>
+                    <input asp-for="Cinema.CreateTime" class="form-control" />
+                    <span asp-validation-for="Cinema.CreateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cinema.UpdateTime" class="control-label"></label>
+                    <input asp-for="Cinema.UpdateTime" class="form-control" />
+                    <span asp-validation-for="Cinema.UpdateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cinema.DeleteTime" class="control-label"></label>
+                    <input asp-for="Cinema.DeleteTime" class="form-control" />
+                    <span asp-validation-for="Cinema.DeleteTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="/Manage/ManageCinema">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

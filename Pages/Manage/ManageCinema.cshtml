@@ -1,0 +1,74 @@
+﻿@page
+@model Mini_Theatre.Pages.Manage.ManageCinemaModel
+@{
+    Layout = "_ManageLayout";
+    ViewData["Title"] = "Manage Cinema";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a asp-page="/Cinemas/Create" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Create New</span>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var c in Model.Cinemas)
+                        {
+                            <tr>
+                                <td>@c.Id</td>
+                                <td>@c.Name</td>
+                                <td>@c.Address</td>
+                                <th>
+                                    <a asp-page="/Cinemas/Edit" asp-route-id="@c.Id" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (c.DeleteTime != null)
+                                    {
+                                        <a class="btn btn-secondary btn-circle btn-sm" disabled>
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="/Manage/ManageCinema" asp-page-handler="Delete" asp-route-id="@c.Id" class="btn btn-danger btn-circle btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

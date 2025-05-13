@@ -1,0 +1,96 @@
+﻿@page
+@model Mini_Theatre.Pages.Movies.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <h1>Edit Movie</h1>
+
+    <form method="post">
+        <!-- Fields for Movie properties -->
+        <div class="form-group">
+            <label asp-for="Movie.Title"></label>
+            <input asp-for="Movie.Title" class="form-control" />
+            <span asp-validation-for="Movie.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.Description"></label>
+            <textarea asp-for="Movie.Description" class="form-control"></textarea>
+            <span asp-validation-for="Movie.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.Duration"></label>
+            <input asp-for="Movie.Duration" class="form-control" />
+            <span asp-validation-for="Movie.Duration" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.Rating"></label>
+            <input asp-for="Movie.Rating" class="form-control" />
+            <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.PosterUrl"></label>
+            <input asp-for="Movie.PosterUrl" class="form-control" />
+            <span asp-validation-for="Movie.PosterUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.TrailerUrl"></label>
+            <input asp-for="Movie.TrailerUrl" class="form-control" />
+            <span asp-validation-for="Movie.TrailerUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.ReleaseDate"></label>
+            <input asp-for="Movie.ReleaseDate" class="form-control" />
+            <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+        </div>
+
+        <!-- Checkboxes for Genres -->
+        <div class="form-group">
+            <label>Genres</label>
+            @foreach (var genre in Model.Genres)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedGenres" value="@genre.Id" @(Model.SelectedGenres.Contains(genre.Id) ? "checked" : "") />
+                    <label class="form-check-label">@genre.Name</label>
+                </div>
+            }
+        </div>
+
+        <!-- Checkboxes for Actors -->
+        <div class="form-group">
+            <label>Actors</label>
+            @foreach (var actor in Model.Actors)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedActors" value="@actor.Id" @(Model.SelectedActors.Contains(actor.Id) ? "checked" : "") />
+                    <label class="form-check-label">@actor.Name</label>
+                </div>
+            }
+        </div>
+
+        <!-- Checkboxes for Directors -->
+        <div class="form-group">
+            <label>Directors</label>
+            @foreach (var director in Model.Directors)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedDirectors" value="@director.Id" @(Model.SelectedDirectors.Contains(director.Id) ? "checked" : "") />
+                    <label class="form-check-label">@director.Name</label>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <div>
+        <a asp-page="/Manage/ManageMovie">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

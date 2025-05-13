@@ -1,0 +1,79 @@
+﻿@page
+@model Mini_Theatre.Pages.Rooms.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <h1>Edit</h1>
+
+    <h4>Room</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Room.Id" />
+                <div class="form-group">
+                    <label asp-for="Room.CinemaId" class="control-label"></label>
+                    <select asp-for="Room.CinemaId" class="form-control" asp-items="ViewBag.CinemaId"></select>
+                    <span asp-validation-for="Room.CinemaId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.Name" class="control-label"></label>
+                    <input asp-for="Room.Name" class="form-control" />
+                    <span asp-validation-for="Room.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.Row" class="control-label"></label>
+                    <input asp-for="Room.Row" class="form-control" />
+                    <span asp-validation-for="Room.Row" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.Col" class="control-label"></label>
+                    <input asp-for="Room.Col" class="form-control" />
+                    <span asp-validation-for="Room.Col" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.ScreenType" class="control-label"></label>
+                    <input asp-for="Room.ScreenType" class="form-control" />
+                    <span asp-validation-for="Room.ScreenType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.IsActive" class="control-label"></label>
+                    <input asp-for="Room.IsActive" class="form-control" />
+                    <span asp-validation-for="Room.IsActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.CreateTime" class="control-label"></label>
+                    <input asp-for="Room.CreateTime" class="form-control" />
+                    <span asp-validation-for="Room.CreateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.UpdateTime" class="control-label"></label>
+                    <input asp-for="Room.UpdateTime" class="form-control" />
+                    <span asp-validation-for="Room.UpdateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Room.DeleteTime" class="control-label"></label>
+                    <input asp-for="Room.DeleteTime" class="form-control" />
+                    <span asp-validation-for="Room.DeleteTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="/Manage/ManageRoom">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

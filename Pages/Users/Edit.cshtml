@@ -1,0 +1,105 @@
+﻿@page
+@model Mini_Theatre.Pages.Users.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="User.Id" />
+            <div class="form-group">
+                <label asp-for="User.FullName" class="control-label"></label>
+                <input asp-for="User.FullName" class="form-control" />
+                <span asp-validation-for="User.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Email" class="control-label"></label>
+                <input asp-for="User.Email" class="form-control" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Username" class="control-label"></label>
+                <input asp-for="User.Username" class="form-control" />
+                <span asp-validation-for="User.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.HashedPassword" class="control-label"></label>
+                <input asp-for="User.HashedPassword" class="form-control" />
+                <span asp-validation-for="User.HashedPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PasswordSalt" class="control-label"></label>
+                <input asp-for="User.PasswordSalt" class="form-control" />
+                <span asp-validation-for="User.PasswordSalt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PhoneNumber" class="control-label"></label>
+                <input asp-for="User.PhoneNumber" class="form-control" />
+                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.RoleId" class="control-label"></label>
+                <select asp-for="User.RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                <span asp-validation-for="User.RoleId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="User.HasUsername" /> @Html.DisplayNameFor(model => model.User.HasUsername)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="User.IsEmailVerified" /> @Html.DisplayNameFor(model => model.User.IsEmailVerified)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.VerificationCode" class="control-label"></label>
+                <input asp-for="User.VerificationCode" class="form-control" />
+                <span asp-validation-for="User.VerificationCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.VerificationCodeExpiration" class="control-label"></label>
+                <input asp-for="User.VerificationCodeExpiration" class="form-control" />
+                <span asp-validation-for="User.VerificationCodeExpiration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.IsActive" class="control-label"></label>
+                <input asp-for="User.IsActive" class="form-control" />
+                <span asp-validation-for="User.IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.CreateTime" class="control-label"></label>
+                <input asp-for="User.CreateTime" class="form-control" />
+                <span asp-validation-for="User.CreateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.UpdateTime" class="control-label"></label>
+                <input asp-for="User.UpdateTime" class="form-control" />
+                <span asp-validation-for="User.UpdateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.DeleteTime" class="control-label"></label>
+                <input asp-for="User.DeleteTime" class="form-control" />
+                <span asp-validation-for="User.DeleteTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Manage/ManageUser">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

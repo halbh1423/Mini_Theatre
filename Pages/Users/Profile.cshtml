@@ -1,0 +1,86 @@
+﻿@page
+@model Mini_Theatre.Pages.Users.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-4">
+            <h2>Thông tin cá nhân</h2>
+            <form method="post" class="form-horizontal">
+                <div class="form-group" hidden>
+                    <input asp-for="@Model.User.Id" class="form-control" />
+                    <input asp-for="@Model.User.RoleId" class="form-control" />
+                    <input asp-for="@Model.User.Username" class="form-control" />
+                    <input asp-for="@Model.User.HashedPassword" class="form-control" />
+                    <input asp-for="@Model.User.PasswordSalt" class="form-control" />
+                    <input asp-for="@Model.User.HasUsername" class="form-control" />
+                    <input asp-for="@Model.User.IsEmailVerified" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model.User.FullName" class="control-label"></label>
+                    <input asp-for="@Model.User.FullName" class="form-control" />
+                    <span asp-validation-for="@Model.User.FullName" class="text-danger"></span>
+                </div>
+                @if (!@Model.User.HasUsername) 
+                {
+                    <div class="form-group">
+                        <label asp-for="@Model.UserUsername" class="control-label"></label>
+                        <input asp-for="@Model.UserUsername" class="form-control" />
+                        <span asp-validation-for="@Model.UserUsername" class="text-danger"></span>
+                    </div>
+                }
+                <div class="form-group">
+                    <label asp-for="@Model.UserPassword" class="control-label"></label>
+                    <input type="password" asp-for="@Model.UserPassword" class="form-control" />
+                    <span asp-validation-for="@Model.UserPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.User.Email" class="control-label"></label>
+                    <input asp-for="@Model.User.Email" class="form-control" />
+                    <span asp-validation-for="@Model.User.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.User.PhoneNumber" class="control-label"></label>
+                    <input asp-for="@Model.User.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="@Model.User.PhoneNumber" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+
+        </div>
+        <div class="col-8">
+            <h2>Hóa đơn</h2>
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Thời gian</th>
+                        <th>Số lượng vé</th>
+                        <th>Tổng giá</th>
+                        <th>Phương thức thanh toán</th>
+                        <th>Trạng thái</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.OrderTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>@order.Bookings.Count()</td>
+                            <td>@order.TotalPrice.ToString("C0") VNĐ</td>
+                            <td>@order.PaymentMethod</td>
+                            <td>@order.PaymentStatus</td>
+                            <td><a asp-page="/Bookings/BookingList" asp-route-id="@order.Id" asp-route-returnUrl="@Request.Path">Xem</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

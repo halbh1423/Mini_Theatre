@@ -1,0 +1,73 @@
+﻿@page
+@using Utils
+@model Mini_Theatre.Pages.Bookings.CheckoutModel
+@{
+    ViewData["Title"] = "Checkout";
+    int scheduleIdData = (int)ViewData["scheduleId"];
+    string seatIdsData = (string)ViewData["seatIds"];
+}
+
+<section class="container mt-5 mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">Thông tin phim</div>
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Schedule.Movie.Title</h5>
+                    <p class="card-text"><strong>Rạp:</strong> @Model.Schedule.Room.Cinema.Name</p>
+                    <p class="card-text"><strong>Phòng:</strong> @Model.Schedule.Room.Name</p>
+                    <p class="card-text"><strong>Màn Hình:</strong> @Model.Schedule.Room.ScreenType</p>
+                    <p class="card-text"><strong>Suất chiếu:</strong> @Model.Schedule.ShowDate.ToString("dd/MM/yyyy") @Model.Schedule.ShowTime.ToString("HH:mm")</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">Thông tin ghế</div>
+                <div class="card-body">
+                    @foreach (var seat in Model.Seats)
+                    {
+                        <p class="card-text">Ghế: @seat.Name - @seat.SeatType.Name - @seat.SeatType.Price.ToString("F0") VND</p>
+                    }
+                    <p class="card-text"><strong>Tổng tiền:</strong> @Model.TotalPrice.ToString("F0") VND</p>
+                    <p class="card-text"><strong>Tổng tiền (USD):</strong> @Model.TotalPriceUSD.ToString("F") USD</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">Thông tin người dùng</div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Tên:</strong> @User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</p>
+                    <p class="card-text"><strong>Email:</strong> @User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">Thanh toán</div>
+                <div class="card-body">
+                    <div id="paypal-button-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://www.paypal.com/sdk/js?client-id=@PaypalSetting.ClientId&currency=USD"></script>
+    <script>
+        var url = '/Bookings/BookSeat?scheduleId=' + @ViewData["scheduleId"] + '&seatIds=' + '@ViewData["seatIds"]';
+
+        paypal.Buttons({
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '@Model.TotalPriceUSD'
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                window.location.href = url;
+            }
+        }).render('#paypal-button-container');
+    </script>
+}

@@ -1,0 +1,248 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@* Slider *@
+<section class="section-text-white position-relative">
+    <div class="d-background" data-image-src="../images/login.jpg" data-parallax="scroll"></div>
+    <div class="d-background bg-black-80"></div>
+    <div class="mt-auto container position-relative">
+        <div class="top-block-head text-uppercase">
+            <h2 class="display-4">
+                Phim
+                <span class="text-theme">đang chiếu</span>
+            </h2>
+        </div>
+        <div class="top-block-footer">
+            <div class="slick-spaced slick-carousel" data-slick-view="navigation responsive-4">
+                <div class="slick-slides">
+                    @foreach (var m in Model.PlayingMovies)
+                    {
+                        <div class="slick-slide">
+                            <article class="poster-entity" data-role="hover-wrap">
+                                <div class="embed-responsive embed-responsive-poster">
+                                    <img class="embed-responsive-item" src="@m.PosterUrl" alt="" />
+                                </div>
+                                <div class="d-background bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show"></div>
+                                <div class="d-over bg-highlight-bottom">
+                                    <div class="collapse animated faster entity-play" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                        <a class="action-icon-theme action-icon-bordered rounded-circle" href="@m.TrailerUrl" data-magnific-popup="iframe">
+                                            <span class="icon-content"><i class="fas fa-play"></i></span>
+                                        </a>
+                                    </div>
+                                    <h4 class="entity-title">
+                                        <a class="content-link" asp-page="/Movies/Details" asp-route-id="@m.Id">@m.Title</a>
+                                    </h4>
+                                    <div class="entity-category">
+                                        @foreach (var g in m.Genres)
+                                        {
+                                            <a class="content-link" href="#">@g.Name</a>
+                                        }
+                                    </div>
+                                    <div class="entity-info">
+                                        <div class="info-lines">
+                                            <div class="info info-short">
+                                                <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                                <span class="info-text">8,1</span>
+                                                <span class="info-rest">/10</span>
+                                            </div>
+                                            <div class="info info-short">
+                                                <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                                <span class="info-text">@m.Duration</span>
+                                                <span class="info-rest">&nbsp;min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+                <div class="slick-arrows">
+                    <div class="slick-arrow-prev">
+                        <span class="th-dots th-arrow-left th-dots-animated">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                    <div class="slick-arrow-next">
+                        <span class="th-dots th-arrow-right th-dots-animated">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* List *@
+<section class="section-long">
+    <div class="container">
+        <div class="section-head">
+            <h2 class="section-title text-uppercase">Lịch chiếu phim</h2>
+            <p class="section-text">Hôm nay: @DateTime.Now.ToString("dd/MM")</p>
+        </div>
+        <article class="movie-line-entity">
+            <div class="entity-dates">
+                @for (int i = 0; i < 7; i++)
+                {
+                    DateTime date = DateTime.Now.Date.AddDays(i);
+                    <a class="btn-date btn" asp-page="/Index" asp-route-showDate="@date.Date" style="padding-right: 30px;padding-left: 30px;">
+                        <span class="text-info">@date.DayOfWeek </span>
+                        <span class="text-theme">@date.ToString("dd/MM")</span>
+                    </a>
+                }
+            </div>
+        </article>
+        @if (Model.MoviesSchedules.Count == 0)
+        {
+            <h2 class="display-4 mt-5">
+                Chưa có phim
+                <span class="text-theme">được chiếu</span>
+            </h2>
+        }
+        @foreach (var ms in Model.MoviesSchedules)
+        {
+            <article class="movie-line-entity">
+                <div class="entity-poster" data-role="hover-wrap">
+                    <div class="embed-responsive embed-responsive-poster">
+                        <img class="embed-responsive-item" src="@ms.Movie.PosterUrl" alt="" />
+                    </div>
+                    <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                        <div class="entity-play">
+                            <a class="action-icon-theme action-icon-bordered rounded-circle" href="@ms.Movie.TrailerUrl" data-magnific-popup="iframe">
+                                <span class="icon-content"><i class="fas fa-play"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="entity-content">
+                    <h4 class="entity-title">
+                        <a class="content-link" asp-page="/Movies/Details" asp-route-id="@ms.Movie.Id">@ms.Movie.Title</a>
+                    </h4>
+                    <div class="entity-category">
+                        @foreach (Genre g in ms.Movie.Genres)
+                        {
+                            <a class="content-link" asp-page="/Movies/List" asp-route-GenreId="@g.Id">@g.Name</a>
+                        }
+                    </div>
+                    <div class="entity-info">
+                        <div class="info-lines">
+                            <div class="info info-short">
+                                <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                <span class="info-text">@ms.Movie.Rating</span>
+                                <span class="info-rest">/10</span>
+                            </div>
+                            <div class="info info-short">
+                                <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                <span class="info-text">@ms.Movie.Duration</span>
+                                <span class="info-rest">&nbsp;min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-short entity-text">
+                        @ms.Movie.Description
+                    </p>
+                </div>
+                <div class="entity-extra">
+                    <div class="text-info entity-extra-title">CA CHIẾU</div>
+                    <div class="entity-showtime">
+                        <div class="showtime-wrap">
+                            @foreach (var st in ms.ScheduleDtos)
+                            {
+                                <div class="showtime-item">
+                                    <a class="btn-time btn" aria-disabled="false" asp-page="/Bookings/SelectSeat" asp-route-id="@st.ScheduleId">
+                                        @st.ShowTime.ToString("HH:mm")
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+@* Upcoming Movie *@
+<section class="section-solid-long section-text-white position-relative">
+    <div class="d-background" data-image-src="../images/register.png" data-parallax="scroll"></div>
+    <div class="d-background bg-gradient-black"></div>
+    <div class="container position-relative">
+        <div class="section-head">
+            <h2 class="section-title text-uppercase">Sắp chiếu</h2>
+        </div>
+        <div class="slick-spaced slick-carousel" data-slick-view="navigation single">
+            <div class="slick-slides">
+                @foreach (var m in Model.UpcomingMovies)
+                {
+                    <div class="slick-slide">
+                        <article class="movie-line-entity">
+                            <div class="entity-preview">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <img class="embed-responsive-item img-fluid" src="@m.PosterUrl" alt="" style="object-fit: cover;">
+                                </div>
+                                <div class="d-over">
+                                    <div class="entity-play">
+                                        <a class="action-icon-theme action-icon-bordered rounded-circle" href="@m.TrailerUrl" data-magnific-popup="iframe">
+                                            <span class="icon-content"><i class="fas fa-play"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="entity-content">
+                                <h4 class="entity-title">
+                                    <a class="content-link" asp-page="/Movies/Details" asp-route-id="@m.Id">@m.Title</a>
+                                </h4>
+                                <div class="entity-category">
+                                    @foreach (var g in @m.Genres)
+                                    {
+                                        <a class="content-link" href="movies-blocks.html">@g.Name</a>
+                                    }
+                                </div>
+                                <div class="entity-info">
+                                    <div class="info-lines">
+                                        <div class="info info-short">
+                                            <span class="text-theme info-icon"><i class="fas fa-calendar-alt"></i></span>
+                                            <span class="info-text">@m.ReleaseDate?.ToString("dd MMM yyyy")</span>
+                                        </div>
+                                        <div class="info info-short">
+                                            <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                            <span class="info-text">@m.Duration</span>
+                                            <span class="info-rest">&nbsp;min</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-short entity-text">
+                                    @m.Description
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+            <div class="slick-arrows">
+                <div class="slick-arrow-prev">
+                    <span class="th-dots th-arrow-left th-dots-animated">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </div>
+                <div class="slick-arrow-next">
+                    <span class="th-dots th-arrow-right th-dots-animated">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

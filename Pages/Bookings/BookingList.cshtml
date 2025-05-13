@@ -1,0 +1,118 @@
+﻿@page
+@model Mini_Theatre.Pages.Bookings.BookingListModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tickets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="~/ticket/style.css">
+
+</head>
+<body>
+    <button class="back-to-homepage" onclick="window.location.href='@Model.ReturnUrl'">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <div class="" style="display: flex; flex-direction: column; gap: 25px; padding: 50px">
+        @{
+            var user = Model.Order.User;
+        }
+        @foreach (var booking in Model.Tickets)
+        {
+            var schedule = booking.Schedule;
+            var seat = booking.Seat;
+            var room = schedule.Room;
+            var movie = schedule.Movie;
+
+            <div class="ticket mt-5">
+                <div class="left">
+                    <div class="image" style="background-image: url('@movie.PosterUrl')">
+                        <p class="admit-one">
+                            <span>@movie.Title</span>
+                            <span>@movie.Title</span>
+                        </p>
+                        <div class="ticket-number">
+                            <p>#@(schedule.ShowTime.ToString("ddMMHHmm") + Model.Order.Id + Model.Order.UserId + booking.Id)</p>
+                        </div>
+                    </div>
+                    <div class="ticket-info">
+                        <p class="date">
+                            <span>@schedule.ShowDate.DayOfWeek</span>
+                            <span class="june-29">@schedule.ShowDate.ToString("dd MMM")</span>
+                            <span>@schedule.ShowDate.Year</span>
+                        </p>
+                        <div class="show-name">
+                            <h1>@movie.Title</h1>
+                            @foreach (var d in movie.Directors)
+                            {
+                                <h2>@d.Name</h2>
+                            }
+                        </div>
+                        <div class="time">
+                            <p>Duration <span>@movie.Duration MIN</span></p>
+                        </div>
+                        <p class="location">
+                            <span>MINI</span>
+                            <span class="separator"><i class="far fa-smile"></i></span><span>@room.Cinema.Address</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="right">
+                    <p class="admit-one">
+                        <span>@movie.Title</span>
+                        <span>@movie.Title</span>
+                    </p>
+                    <div class="right-info-container">
+                        <div class="show-name">
+                            <h1>@room.Cinema.Name</h1>
+                        </div>
+                        <div class="time">
+                            <p>@schedule.ShowTime.ToString("hh:mm tt") <span>TO</span> @schedule.EndTime.ToString("hh:mm tt")</p>
+                            <p>Seat <span>@seat.Name</span> @room.Name</p>
+                            <p><span>Price</span> @seat.SeatType.Price.ToString("F0") vnđ</p>
+                        </div>
+                        <div class="barcode">
+                            <img src="https://external-preview.redd.it/cg8k976AV52mDvDb5jDVJABPrSZ3tpi1aXhPjgcDTbw.png?auto=webp&s=1c205ba303c1fa0370b813ea83b9e1bddb7215eb" alt="QR code">
+                        </div>
+                        <p>#@(schedule.ShowTime.ToString("ddMMHHmm") + Model.Order.Id + Model.Order.UserId + booking.Id)</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const colors = [
+                ["#ff7e5f", "#feb47b"], // Sunset
+                ["#6a11cb", "#2575fc"], // Violet to blue
+                ["#00c6ff", "#0072ff"], // Blue gradient
+                ["#ff512f", "#dd2476"], // Coral
+                ["#e0c3fc", "#8ec5fc"], // Lavender to blue
+                ["#fc5c7d", "#6a82fb"], // Pink to blue
+                ["#ff5f6d", "#ffc371"], // Coral
+                ["#f9d423", "#ff4e50"], // Orange to red
+                ["#a8c0ff", "#3f2b96"], // Light blue to purple
+                ["#ff9a9e", "#fad0c4"]  // Pink to beige
+            ];
+
+            const directions = [
+                "to top", "to right", "to bottom", "to left",
+                "to top right", "to top left", "to bottom right", "to bottom left"
+            ];
+
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+
+            const gradient = `linear-gradient(${randomDirection}, ${randomColor[0]}, ${randomColor[1]})`;
+            document.documentElement.style.background = gradient;
+        });
+    </script>
+</body>
+</html>

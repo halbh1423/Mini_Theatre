@@ -1,0 +1,88 @@
+﻿@page
+@model Mini_Theatre.Pages.Movies.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+
+    <h1>Create</h1>
+
+    <h4>Movie</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Movie.Title" class="control-label"></label>
+                    <input asp-for="Movie.Title" class="form-control" />
+                    <span asp-validation-for="Movie.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Description" class="control-label"></label>
+                    <input asp-for="Movie.Description" class="form-control" />
+                    <span asp-validation-for="Movie.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Duration" class="control-label"></label>
+                    <input asp-for="Movie.Duration" class="form-control" />
+                    <span asp-validation-for="Movie.Duration" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Rating" class="control-label"></label>
+                    <input asp-for="Movie.Rating" class="form-control" />
+                    <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.PosterUrl" class="control-label"></label>
+                    <input asp-for="Movie.PosterUrl" class="form-control" />
+                    <span asp-validation-for="Movie.PosterUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.TrailerUrl" class="control-label"></label>
+                    <input asp-for="Movie.TrailerUrl" class="form-control" />
+                    <span asp-validation-for="Movie.TrailerUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.ReleaseDate" class="control-label"></label>
+                    <input asp-for="Movie.ReleaseDate" class="form-control" />
+                    <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.IsActive" class="control-label"></label>
+                    <input asp-for="Movie.IsActive" class="form-control" />
+                    <span asp-validation-for="Movie.IsActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.CreateTime" class="control-label"></label>
+                    <input asp-for="Movie.CreateTime" class="form-control" />
+                    <span asp-validation-for="Movie.CreateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.UpdateTime" class="control-label"></label>
+                    <input asp-for="Movie.UpdateTime" class="form-control" />
+                    <span asp-validation-for="Movie.UpdateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.DeleteTime" class="control-label"></label>
+                    <input asp-for="Movie.DeleteTime" class="form-control" />
+                    <span asp-validation-for="Movie.DeleteTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="/Manage/ManageMovie">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

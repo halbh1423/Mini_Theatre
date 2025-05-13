@@ -1,0 +1,164 @@
+﻿@page
+@model Mini_Theatre.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="after-head d-flex section-text-white position-relative">
+    <div class="d-background" data-image-src="@Model.Movie.PosterUrl" data-parallax="scroll"></div>
+    <div class="d-background bg-black-40"></div>
+    <div class="top-block top-inner container">
+        <div class="top-block-content">
+            <h1 class="section-title">Thông tin phim</h1>
+            <div class="page-breadcrumbs">
+                <a class="content-link" asp-page="/Index">Trang chủ</a>
+                <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                <a class="content-link" href="#">@Model.Movie.Title</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container section-long">
+    <div class="section-line">
+        <div class="movie-info-entity">
+            <div class="entity-poster" data-role="hover-wrap">
+                <div class="embed-responsive embed-responsive-poster">
+                    <img class="embed-responsive-item" src="@Model.Movie.PosterUrl" alt="" />
+                </div>
+                <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                    <div class="entity-play">
+                        <a class="action-icon-theme action-icon-bordered rounded-circle" href="@Model.Movie.TrailerUrl" data-magnific-popup="iframe">
+                            <span class="icon-content"><i class="fas fa-play"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="entity-content">
+                <h2 class="entity-title">@Model.Movie.Title</h2>
+                <div class="entity-category">
+                    @foreach (Genre g in @Model.Movie.Genres)
+                    {
+                        <a class="content-link" asp-page="/Movies/List" asp-route-GenreId="@g.Id">@g.Name</a>
+                    }
+                </div>
+                <div class="entity-info">
+                    <div class="info-lines">
+                        <div class="info info-short">
+                            <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                            <span class="info-text">@Model.Movie.Rating</span>
+                            <span class="info-rest">/10</span>
+                        </div>
+                        <div class="info info-short">
+                            <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                            <span class="info-text">@Model.Movie.Duration</span>
+                            <span class="info-rest">&nbsp;min</span>
+                        </div>
+                    </div>
+                </div>
+                <ul class="entity-list">
+                    <li>
+                        <p class="entity-list-title">Release: </p>@Model.Movie.ReleaseDate?.ToString("dd/MM/yyyy")
+                    </li>
+                    <li>
+                        <p class="entity-list-title">Directed:</p>
+                        @foreach (Director d in @Model.Movie.Directors)
+                        {
+                            <a class="content-link">@d.Name</a>
+                        }
+                    </li>
+                    <li>
+                        <span class="entity-list-title">Starring:</span>
+                        @foreach (Actor a in @Model.Movie.Actors)
+                        {
+                            <a class="content-link">@a.Name</a>
+                        }
+                    </li>
+                    <li>
+                        <span class="entity-list-title">Production company:</span>
+                        <a class="content-link" href="#">Re-Production Bro.</a>,
+                        <a class="content-link" href="#">Pentakid</a>
+                    </li>
+                    <li>
+                        <span class="entity-list-title">Country:</span>
+                        <a class="content-link" href="#">USA</a>,
+                        <a class="content-link" href="#">India</a>
+                    </li>
+                    <li>
+                        <span class="entity-list-title">Language: </span>VietSub
+                    </li>
+                    <div class="entity-subtext">@Model.Movie.Description</div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @* chi tiết, giới thiệu, mô tả phim *@
+    <div class="section-line">
+        <div class="section-head">
+            <h2 class="section-title text-uppercase">Lịch chiếu</h2>
+        </div>
+        @{
+            var showDate = Model.Movie.Schedules
+            .Select(s => s.ShowDate)
+            .Distinct()
+            .ToList();
+        }
+        @foreach (DateTime sd in showDate)
+        {
+            var showTimes = Model.Movie
+            .Schedules
+            .Where(s => s.ShowTime.Date == sd.Date)
+            .ToList();
+
+            <div class="entity-content">
+                <h4 class="entity-title">
+                    <a class="content-link">
+                        <span class="text-info">@sd.DayOfWeek</span> <span class="text-theme">@sd.ToString("dd/MM")</span>
+                    </a>
+                </h4>
+            </div>
+            <div class="mt-1"></div>
+            <div class="entity-extra">
+                <div class="entity-showtime">
+                    <div class="showtime-wrap">
+                        @foreach (var st in showTimes)
+                        {
+                            <div class="showtime-item">
+                                <a class="btn-time btn" aria-disabled="false" asp-page="/Bookings/SelectSeat" asp-route-id="@st.Id">
+                                    @st.ShowTime.ToString("HH:mm")
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3"></div>
+        }
+
+        <div class="section-bottom">
+            <div class="row">
+                @* share các phim qua các nền tảng khác nhau *@
+                <div class="mr-auto col-auto">
+                    <div class="entity-links">
+                        <div class="entity-list-title">Share:</div>
+                        <a class="content-link entity-share-link" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="content-link entity-share-link" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="content-link entity-share-link" href="#"><i class="fab fa-google-plus-g"></i></a>
+                        <a class="content-link entity-share-link" href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a class="content-link entity-share-link" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                @* các tag về thể loại phim *@
+                <div class="col-auto">
+                    <div class="entity-links">
+                        <div class="entity-list-title">Được tạo bởi:</div>
+                        <a class="content-link" href="https://facebook.com/letoangt.tt">letoangt</a>,&nbsp;
+                        <a class="content-link" href="https://facebook.com/bae.haf">lebaha</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* lăn lên đầu *@
+    <a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+</section>

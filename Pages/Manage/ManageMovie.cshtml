@@ -1,0 +1,252 @@
+﻿@page
+@model Mini_Theatre.Pages.Manage.ManageMovieModel
+@{
+    Layout = "_ManageLayout";
+    ViewData["Title"] = "Manage Movie";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a asp-page="/Movies/Create" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Create New</span>
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Duration(min)</th>
+                            <th>Rating</th>
+                            <th>ReleaseDate</th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Duration(min)</th>
+                            <th>Rating</th>
+                            <th>ReleaseDate</th>
+                            <th>
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var m in Model.Movies)
+                        {
+                            <tr>
+                                <td>@m.Title</td>
+                                <td>@(m.Description.Length > 50 ? m.Description.Substring(0, 50) + "..." : m.Description)</td>
+                                <td>@m.Duration</td>
+                                <td>@m.Rating</td>
+                                <td>@m.ReleaseDate?.ToString("dd/MM/yyyy")</td>
+                                <th>
+                                    <a asp-page="/Movies/Edit" asp-route-id="@m.Id" class="btn btn-info btn-circle btn-sm" onclick="updateMovie('@m.Id')">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (m.DeleteTime != null)
+                                    {
+                                        <a class="btn btn-secondary btn-circle btn-sm" disabled>
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="/Manage/ManageMovie" asp-page-handler="Delete" asp-route-id="@m.Id" class="btn btn-danger btn-circle btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Nội dung chi tiết phim sẽ được thêm bằng JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" id="updateMovieForm" method="post" asp-page-handler="Update"> 
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Movie.Id" class="control-label"></label>
+                    <input class="form-control" asp-for="Movie.Id" readonly />
+                    <span asp-validation-for="Movie.Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Title" class="control-label"></label>
+                    <input asp-for="Movie.Title" class="form-control" />
+                    <span asp-validation-for="Movie.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Description" class="control-label"></label>
+                    <input asp-for="Movie.Description" class="form-control" />
+                    <span asp-validation-for="Movie.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label><strong>Genres:</strong></label><br />
+                    @foreach (var genre in Model.AllGenres)
+                    {
+                        <input type="checkbox" name="SelectedGenres" value="@genre.Id" @(Model.Movie.Genres.Any(g => g.Id == genre.Id) ? "checked" : "") /> @genre.Name
+                        <br />
+                    }
+                </div>
+                <div class="form-group">
+                    <label><strong>Actors:</strong></label><br />
+                    @foreach (var actor in Model.AllActors)
+                    {
+                        <input type="checkbox" name="SelectedActors" value="@actor.Id" @(Model.Movie.Actors.Any(a => a.Id == actor.Id) ? "checked" : "") /> @actor.Name
+                        <br />
+                    }
+                </div>
+                <div class="form-group">
+                    <label><strong>Directors:</strong></label><br />
+                    @foreach (var director in Model.AllDirectors)
+                    {
+                        <input type="checkbox" name="SelectedDirectors" value="@director.Id" @(Model.Movie.Directors.Any(d => d.Id == director.Id) ? "checked" : "") /> @director.Name
+                        <br />
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Duration" class="control-label"></label>
+                    <input asp-for="Movie.Duration" class="form-control" />
+                    <span asp-validation-for="Movie.Duration" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.Rating" class="control-label"></label>
+                    <input asp-for="Movie.Rating" class="form-control" />
+                    <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.PosterUrl" class="control-label"></label>
+                    <input asp-for="Movie.PosterUrl" class="form-control" />
+                    <span asp-validation-for="Movie.PosterUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.TrailerUrl" class="control-label"></label>
+                    <input asp-for="Movie.TrailerUrl" class="form-control" />
+                    <span asp-validation-for="Movie.TrailerUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Movie.ReleaseDate" class="control-label"></label>
+                    <input type="datetime" asp-for="Movie.ReleaseDate" class="form-control" />
+                    <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+                </div>
+                <input type="datetime" asp-for="Movie.CreateTime" class="form-control" hidden />
+                <input type="datetime" asp-for="Movie.UpdateTime" class="form-control" hidden />
+                <input type="datetime" asp-for="Movie.DeleteTime" class="form-control" hidden />
+                <input asp-for="Movie.IsActive" class="form-control" hidden/>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Các script để gọi AJAX và xử lý -->
+@section Scripts {
+    <script>
+        // AJAX để lấy thông tin chi tiết phim
+        function getMovieDetails(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/ManageMovie?handler=GetMovieDetails&id=' + id,
+                success: function (response) {
+                    $('#detailModal .modal-body').html('<p><strong>Title:</strong> ' + response.title + '</p>' +
+                        '<p><strong>Description:</strong> ' + response.description + '</p>' +
+                        '<p><strong>Duration:</strong> ' + response.duration + ' mins</p>' +
+                        '<p><strong>Rating:</strong> ' + response.rating + '</p>' +
+                        '<p><strong>Release Date:</strong> ' + response.releaseDate + '</p>');
+                    $('#detailModal').modal('show');
+                }
+            });
+        }
+
+        // AJAX để lấy thông tin phim để chỉnh sửa
+        function updateMovie(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/Manager/ManageMovie?handler=GetMovieDetails&id=' + id,
+                success: function (response) {
+                    $('#updateModal input[name="Movie.Id"]').val(id);
+                    $('#updateModal input[name="Movie.Title"]').val(response.title);
+                    $('#updateModal input[name="Movie.Description"]').val(response.description);
+                    $('#updateModal input[name="Movie.Duration"]').val(response.duration);
+                    $('#updateModal input[name="Movie.Rating"]').val(response.rating);
+                    $('#updateModal input[name="Movie.PosterUrl"]').val(response.posterUrl);
+                    $('#updateModal input[name="Movie.TrailerUrl"]').val(response.trailerUrl);
+                    $('#updateModal input[name="Movie.ReleaseDate"]').val(response.releaseDate);
+                    $('#updateModal input[name="Movie.IsActive"]').val(response.isActive);
+                    $('#updateModal input[name="Movie.CreateTime"]').val(response.createTime);
+                    $('#updateModal input[name="Movie.UpdateTime"]').val(response.updateTime);
+                    $('#updateModal input[name="Movie.DeleteTime"]').val(response.deleteTime);
+                    $('#updateModal input[name="Movie.Genres"]').val(response.genres);
+                    $('#updateModal input[name="Movie.Actors"]').val(response.actos);
+                    $('#updateModal input[name="Movie.Directos"]').val(response.directors);
+
+                    $('#updateModal').modal('show');
+                }
+            });
+        }
+
+        // Xử lý form submit của modal chỉnh sửa phim
+        $('#updateMovieForm').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function () {
+                    $('#updateModal').modal('hide');
+                    location.reload();
+                }
+            });
+        });
+    </script>
+}

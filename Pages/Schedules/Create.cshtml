@@ -1,0 +1,75 @@
+﻿@page
+@model Mini_Theatre.Pages.Schedules.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <h1>Create</h1>
+
+    <h4>Schedule</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Schedule.MovieId" class="control-label"></label>
+                    <select asp-for="Schedule.MovieId" class="form-control" asp-items="ViewBag.MovieId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.RoomId" class="control-label"></label>
+                    <select asp-for="Schedule.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.ShowDate" class="control-label"></label>
+                    <input asp-for="Schedule.ShowDate" class="form-control" />
+                    <span asp-validation-for="Schedule.ShowDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.ShowTime" class="control-label"></label>
+                    <input asp-for="Schedule.ShowTime" class="form-control" />
+                    <span asp-validation-for="Schedule.ShowTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.EndTime" class="control-label"></label>
+                    <input asp-for="Schedule.EndTime" class="form-control" />
+                    <span asp-validation-for="Schedule.EndTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.IsActive" class="control-label"></label>
+                    <input asp-for="Schedule.IsActive" class="form-control" />
+                    <span asp-validation-for="Schedule.IsActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.CreateTime" class="control-label"></label>
+                    <input asp-for="Schedule.CreateTime" class="form-control" />
+                    <span asp-validation-for="Schedule.CreateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.UpdateTime" class="control-label"></label>
+                    <input asp-for="Schedule.UpdateTime" class="form-control" />
+                    <span asp-validation-for="Schedule.UpdateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule.DeleteTime" class="control-label"></label>
+                    <input asp-for="Schedule.DeleteTime" class="form-control" />
+                    <span asp-validation-for="Schedule.DeleteTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-page="/Manage/ManageSchedule">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

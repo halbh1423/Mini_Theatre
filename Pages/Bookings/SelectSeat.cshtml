@@ -1,0 +1,187 @@
+﻿@page
+@model Mini_Theatre.Pages.Bookings.SelectSeatModel
+@{
+    ViewData["Title"] = "Select Seat";
+}
+
+<section class="after-head d-flex section-text-white position-relative">
+    <div class="d-background" data-image-src="@Model.Movie.PosterUrl" data-parallax="scroll"></div>
+    <div class="d-background bg-black-40"></div>
+    <div class="top-block top-inner container">
+        <div class="top-block-content">
+            <h1 class="section-title">Đặt vé</h1>
+            <div class="page-breadcrumbs">
+                <a class="content-link" asp-page="/Index">Trang chủ</a>
+                <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                <p class="" href="#">Đặt vé phim <span class="text-theme">@Model.Movie.Title</span></p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container">
+    <div class="row mt-4">
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="container mb-4 mt-4">
+                <div class="btn-group-custom">
+                    <button class="btn btn-warning">Ghế vip (@Model.SeatTypes.FirstOrDefault(st => st.Id == 1).Price.ToString("F0") vnđ)</button>
+                    <button class="btn">Ghế thường (@Model.SeatTypes.FirstOrDefault(st => st.Id == 2).Price.ToString("F0") vnđ)</button>
+                    <button class="btn btn-success">Ghế đang đặt</button>
+                    <button class="btn btn-secondary">Ghế đã đặt</button>
+                </div>
+            </div>
+            <div class="screen text-center">
+                <span>Màn hình</span>
+            </div>
+            <div class="seats">
+                @for (int i = 0; i < Model.Room.Row; i++)
+                {
+                    <div class="row justify-content-center">
+                        @for (int j = 0; j < Model.Room.Col; j++)
+                        {
+                            var seat = Model.Seats[i * Model.Room.Col + j];
+                            var isBooked = Model.Bookings.Any(b => b.SeatId == seat.Id);
+                            var seatClass = "btn-primary";
+
+                            if (seat.SeatTypeId == 1)
+                            {
+                                seatClass = "btn-warning";
+                            }
+                            else if (seat.SeatTypeId == 2)
+                            {
+                                seatClass = "btn";
+                            }
+
+                            if (isBooked)
+                            {
+                                seatClass = "btn-secondary";
+                            }
+
+                            <button class="btn @seatClass m-1 seat-btn" data-seat-id="@seat.Id" data-seat-name="@seat.Name" data-seat-price="@seat.SeatType.Price" @if (isBooked) { <text>disabled</text> }>
+                                @seat.Name
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="@Model.Schedule.Movie.PosterUrl" alt="@Model.Schedule.Movie.Title">
+                <div class="card-body">
+                    <h2 class="entity-title">@Model.Schedule.Movie.Title</h2>
+                    <h5 class="card-title"></h5>
+                    <p class="card-text">@Model.Schedule.Movie.Description</p>
+                    <hr />
+                    <p class="card-text">Rạp: @Model.Schedule.Room.Cinema.Name</p>
+                    <p class="card-text">Phòng: @Model.Schedule.Room.Name</p>
+                    <p class="card-text">Màn Hình: @Model.Schedule.Room.ScreenType</p>
+                    <hr />
+                    <p class="card-text">Ghế đặt: <span id="booked-seats"></span></p>
+                    <p class="card-text">Thành tiền: <span id="total-price">0</span> VND</p>
+                    <hr />
+                    <button class="btn btn-theme" id="buy-ticket" href="#"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;Thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-group-custom {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-group-custom .btn {
+        flex: 1;
+        margin: 0 5px;
+    }
+        
+    .screen {
+        padding: 10px;
+        background: #ddd;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .seats .row {
+        margin-bottom: 10px;
+    }
+
+    .seat-btn {
+        width: 50px;
+        height: 50px;
+    }
+</style>
+
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var seatIds = '';
+            var seatButtons = document.querySelectorAll('.seat-btn');
+            var totalPriceElement = document.getElementById('total-price');
+            var bookedSeatsElement = document.getElementById('booked-seats');
+            var buyTicketButton = document.getElementById('buy-ticket');
+
+            function calculateTotalPrice() {
+                var totalPrice = 0;
+                var bookedSeats = '';
+                var bookedSeatIds = '';
+                seatButtons.forEach(function (button) {
+                    if (button.classList.contains('btn-success')) {
+                        totalPrice += parseFloat(button.getAttribute('data-seat-price'));
+                        bookedSeats += button.getAttribute('data-seat-name') + ' ';
+                        bookedSeatIds += button.getAttribute('data-seat-id') + ' ';
+                    }
+                });
+                seatIds = bookedSeatIds;
+                totalPriceElement.textContent = totalPrice / 1000 + '.000';
+                bookedSeatsElement.textContent = bookedSeats;
+            }
+
+            seatButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Nếu là ghế VIP
+                    if (this.classList.contains('btn-warning') || this.classList.contains('btn-warning-temp')) {
+                        // Nếu là ghế VIP mà chưa được chọn
+                        if (this.classList.contains('btn-warning')) {
+                            this.classList.remove('btn-warning');
+                            this.classList.add('btn-success');
+                            this.classList.add('btn-warning-temp');
+                        }
+                        // Nếu là ghế VIP mà đã được chọn
+                        else if (this.classList.contains('btn-warning-temp')) {
+                            this.classList.remove('btn-success');
+                            this.classList.add('btn-warning');
+                            this.classList.remove('btn-warning-temp');
+                        }
+                    }
+                    // Nếu là ghế thường
+                    else {
+                        if (!this.classList.contains('btn-success')) {
+                            this.classList.add('btn-success');
+                        } else {
+                            this.classList.remove('btn-success');
+                        }
+                    }
+                    // Tính lại tổng tiền
+                    calculateTotalPrice();
+                });
+            });
+
+            buyTicketButton.addEventListener('click', function () {
+                seatIds = seatIds.trim();
+                if (seatIds.length > 0) {
+                    var scheduleId = '@Model.Schedule.Id';
+                    var url = '/Bookings/Checkout?scheduleId=' + scheduleId + '&seatIds=' + seatIds;
+                    window.location.href = url;
+                }
+                else { 
+                    alert('something wrong!');
+                }
+            });
+        });
+    </script>
+}

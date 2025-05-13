@@ -1,0 +1,27 @@
+﻿@page
+@model Mini_Theatre.Pages.Authentication.VerifyEmailModel
+@{
+}
+
+@if (TempData["RegisterSuccess"] != null)
+{
+    <div class="alert alert-success">@TempData["RegisterSuccess"]</div>
+}
+
+@* @if (TempData["VerificationCode"] != null)
+{
+    <p>Mã xác thực của bạn là: @TempData["VerificationCode"]</p>
+} *@
+
+<div class="container mt-3">
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="VerificationCode" class="control-label">Mã xác thực</label>
+            <input asp-for="VerificationCode" class="form-control" />
+            <span asp-validation-for="VerificationCode" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="Email" value="@Model.Email" />
+
+        <button type="submit" class="btn btn-primary">Xác thực</button>
+    </form>
+</div>
